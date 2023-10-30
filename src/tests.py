@@ -5,6 +5,10 @@ from main import app
 client = TestClient(app)
 
 
+def test_cities_create():
+   response = client.post('/cities/create', json={"name": "Moscow"})
+   assert response.status_code == 200
+
 def test_cities_list():
     response = client.get('/cities/get/?q=Moscow')
     print(response.json())
@@ -21,6 +25,3 @@ def test_picnics_list():
     assert response.status_code == 200
 
 
-def test_cities_create():
-   response = client.post('/cities/create', json={"name": "Санкт-Петербург"})
-   assert response.status_code == 200
