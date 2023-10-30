@@ -5,7 +5,7 @@ from pydantic.class_validators import List
 
 from database import City, Picnic, PicnicRegistration, Session, User
 from schemas.picnics import (PicnicModel, PicnicOutput, RegisterPicnicModel,
-                    PicnicReg, PicnicRegOutput)
+                             PicnicReg, PicnicRegOutput)
 
 picnics_router = APIRouter(prefix='/picnics')
 
@@ -15,8 +15,10 @@ pic_descr = 'Время пикника (по умолчанию не задан�
 @picnics_router.get('/get', summary='All Picnics',
                     tags=['picnic'],
                     response_model=List[PicnicOutput])
-def all_picnics(datetime: dt.datetime = Query(default=None, description='Время пикника (по умолчанию не задано)'),
-                past: bool = Query(default=True, description='Включая уже прошедшие пикники')):
+def all_picnics(datetime: dt.datetime = Query(default=None,
+                                              description='Время пикника (по умолчанию не задано)'),
+                past: bool = Query(default=True,
+                                   description='Включая уже прошедшие пикники')):
     """
     Список всех пикников
     """
@@ -79,14 +81,6 @@ def register_to_picnic(data: PicnicReg):
     if not picnic:
         raise HTTPException(status_code=400,
                             detail='Пикника с этим id не существует')
-
-    # Если пользователь уже зарегестрирован
-    oth_reg = session.query(PicnicReg).filter(
-        PicnicReg.picnic_id == picnic.id,
-        PicnicReg.user_id == user.id).first()
-    if oth_reg:
-        raise HTTPException(status_code=400,
-                            detail='Пользователь уже зарегестрирован')
 
     reg = PicnicReg(user_id=user.id, picnic_id=picnic.id)
     session.add(reg)

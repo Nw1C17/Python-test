@@ -3,7 +3,7 @@ import requests
 WEATHER_API_KEY = '99ba78ee79a2a24bc507362c5288a81b'
 
 
-class BaseExternalRequest():
+class BaseRequest():
     def __init__(self):
         """
         Инициализирует класс
@@ -38,7 +38,7 @@ class BaseExternalRequest():
         return r
 
 
-class GetWeatherRequest(BaseExternalRequest):
+class GetWeatherRequest(BaseRequest):
     """
     Выполняет запрос на получение текущей погоды для города
     """
@@ -71,7 +71,7 @@ class GetWeatherRequest(BaseExternalRequest):
             return weather
 
 
-class CheckCityExisting(BaseExternalRequest):
+class CheckCityExisting(BaseRequest):
     """
     Проверка наличия города (запросом к серверу погоды)
     """
